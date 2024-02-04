@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.*;
 
+import pageObject.ShopHomepage;
 import pageObjects.Homepage;
 import pageObjects.ShopContentPanel;
-import pageObjects.ShopHomepage;
 import pageObjects.ShopProductPage;
 
 import java.io.IOException;

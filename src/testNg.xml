@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite parallel="tests" thread-count="2" name="Suite1" verbose="1">
+<suite parallel="tests" thread-count="2" name="Suite1" verbose="2">
     <test name="Regression1">
         <classes>
             <class name="uk.co.automationtesting.OrderCompleteTest"/>

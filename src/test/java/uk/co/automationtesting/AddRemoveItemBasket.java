@@ -1,4 +1,5 @@
 package uk.co.automationtesting;
+import base.ExtentManager;
 import base.Hooks;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -7,8 +8,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pageObject.ShopHomepage;
 import pageObjects.ShopContentPanel;
-import pageObjects.ShopHomepage;
 import pageObjects.ShopProductPage;
 import pageObjects.ShoppingCart;
 
@@ -24,6 +25,9 @@ public class AddRemoveItemBasket extends Hooks {
 
     @Test
     public void endToEndTest() throws InterruptedException, IOException {
+        ExtentManager.log("Starting Add Remove Item Test....");
+
+
 
         pageObjects.Homepage home = new pageObjects.Homepage();
 
@@ -32,15 +36,22 @@ public class AddRemoveItemBasket extends Hooks {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", testStoreLink);
         testStoreLink.click();
 
+        ExtentManager.pass("Reach Home Page....");
 
-        pageObjects.ShopHomepage shopHomePage = new ShopHomepage();
+
+        ShopHomepage shopHomePage = new ShopHomepage();
         shopHomePage.getProdOne().click();
         ShopProductPage shopProductPage = new ShopProductPage();
         Thread.sleep(2000);
 
+        ExtentManager.pass("Reached Product Page....");
+
+
         Select option = new Select(shopProductPage.getSizeOption());
         option.selectByVisibleText("M");
-       shopProductPage.getQuantIncrease().click();
+        ExtentManager.pass("Have Successfully Product Size......");
+
+        shopProductPage.getQuantIncrease().click();
         Thread.sleep(2000);
 
         shopProductPage.getAddToCartBtn().click();
@@ -59,7 +70,15 @@ public class AddRemoveItemBasket extends Hooks {
         waitForElementInVisible(shoppingCart.getDeleteItemTwo(), Duration.ofSeconds(10));
 
         System.out.println(shoppingCart.getTotalAmount().getText());
-        Assert.assertEquals(shoppingCart.getTotalAmount().getText(),"$45.23");
+
+        try {
+            Assert.assertEquals(shoppingCart.getTotalAmount().getText(),"$45.23");
+            ExtentManager.pass("Expected price");
+
+        }catch(AssertionError err) {
+            Assert.fail("Cart amount did not match price" + shoppingCart.getTotalAmount().getText() + "expected");
+            ExtentManager.fail("The Total amount did not match");
+        }
 
     }
 }

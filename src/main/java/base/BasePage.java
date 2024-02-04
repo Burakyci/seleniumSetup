@@ -23,7 +23,7 @@ public class BasePage {
     private  String url;
     private final Properties prop;
 
-
+    public static String screenShotDestinationPath;
 
     public BasePage() throws IOException {
         prop = new Properties();
@@ -42,17 +42,29 @@ public class BasePage {
         return url;
     }
 
-    public void takeSnapShot(String name) throws IOException {
-        File srcFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
+    public static String timestamp() {
+        return new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
+    }
 
-        File destFile = new File(System.getProperty("user.dir") + "/target/screenshots"
-                + timestamp() + ".png");
-        FileUtils.copyFile(srcFile, destFile);
+    public static String takeSnapShot(String name) throws IOException {
+        File srcFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
+        String destFile = System.getProperty("user.dir") + "/target/screenshots" + timestamp() + ".png";
+
+        screenShotDestinationPath = destFile;
+
+        try {
+            FileUtils.copyFile(srcFile, new File(destFile));
+        } catch (IOException e) {
+            e.printStackTrace();  // Handle or log the exception as needed
+        }
+
+        return name;
     }
 
 
-    public String timestamp() {
-        return new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
+
+    public static String getScreenShotDestinationPath(){
+        return screenShotDestinationPath;
     }
 
     public static void waitForElementInVisible (WebElement element, Duration timer) throws IOException {
